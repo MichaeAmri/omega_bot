@@ -1,11 +1,20 @@
-# подключаем необходимые библиотеки
-from picamera import PiCamera
-from time import sleep
-# создаём объект для работы с камерой
-camera = PiCamera()
-# запускаем просмотр сигнала с камеры на экране поверх всех окон
-camera.start_preview()
-# 10 секунд смотрим на экран
-sleep(10)
-# выключаем просмотр
-camera.stop_preview()
+import cv2 as cv
+
+video = cv.VideoCapture(0)
+
+if not video.isOpened():
+    print('error while opening the video')
+
+cv.waitKey(10)
+
+while video.isOpened():
+    _, frame = video.read()
+
+    cv.imshow('video', frame)
+
+    if cv.waitKey(1) & 0xFF == ord('q'):
+        video.release()
+        cv.destroyAllWindows()
+
+video.release()
+cv.destroyAllWindows()
